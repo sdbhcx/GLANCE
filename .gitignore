@@ -12,3 +12,5 @@ pretrain/*
 *.e*
 *.o*
 *.sh
+
+LISA-7B-v1/

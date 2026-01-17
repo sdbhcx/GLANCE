@@ -4,9 +4,15 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-import mitsuba as mi
 import torch
 from torch import nn
+
+# Setup Mitsuba renderer
+try:
+    import mitsuba as mi
+except ImportError:
+    warnings.warn("Mitsuba not found. Rendering functionality will be disabled.")
+    mi = None
 
 def standardize_bbox(pc):
     mins = np.amin(pc, axis=0)
@@ -186,9 +192,10 @@ class Projector(nn.Module):
 
 if __name__=='__main__':
     
-    data_root='/path/to/LASO_dataset'
+    data_root='LASO_dataset'
     with open(os.path.join(data_root, f'objects_train.pkl'), 'rb') as f:
         objects_file = pickle.load(f)
+    print(333, len(objects_file.keys()))
     point_cloud = objects_file['1b67b4bfed6688ba5b22feddf58c05e1']
     point_cloud = standardize_bbox(point_cloud)
     batch_size = 32

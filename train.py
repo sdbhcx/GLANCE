@@ -40,7 +40,7 @@ set_gpu_devices(opt.gpu)
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from model.PointSAM import get_PointSAM
-from model.PointRefer import get_PointRefer
+# from model.PointRefer import get_PointRefer
 from utils.loss import HM_Loss, kl_div
 from utils.eval import evaluating, SIM
 from eval_lyc import evaluate, print_metrics_in_table 
@@ -90,13 +90,13 @@ def main(opt, dict):
     test_loader = DataLoader(test_dataset, batch_size=batch_size, num_workers=8, shuffle=False)
     logger.debug(f'test data loading finish, loading data files:{len(test_dataset)}')
 
-    # model = get_PointSAM(emb_dim=dict['emb_dim'], proj_dim=dict['proj_dim'],
-    #                      num_heads=dict['num_heads'], N_raw=opt.N_raw, 
-    #                      num_affordance = dict['num_affordance'], 
-    #                     n_groups=opt.n_groups, n_sample=opt.n_sample, point_encoder=opt.point_encoder)
-    model = get_PointRefer(emb_dim=dict['emb_dim'],
-                       proj_dim=dict['proj_dim'], num_heads=dict['num_heads'], N_raw=dict['N_raw'],
-                       num_affordance = dict['num_affordance'], n_groups=opt.n_groups)
+    model = get_PointSAM(emb_dim=dict['emb_dim'], proj_dim=dict['proj_dim'],
+                         num_heads=dict['num_heads'], N_raw=opt.N_raw, 
+                         num_affordance = dict['num_affordance'], 
+                        n_groups=opt.n_groups, n_sample=opt.n_sample, point_encoder=opt.point_encoder)
+    # model = get_PointRefer(emb_dim=dict['emb_dim'],
+    #                    proj_dim=dict['proj_dim'], num_heads=dict['num_heads'], N_raw=dict['N_raw'],
+    #                    num_affordance = dict['num_affordance'], n_groups=opt.n_groups)
     criterion_hm = HM_Loss()
     # criterion_focal = SoftLabelFocalLoss()
     param_dicts = [
